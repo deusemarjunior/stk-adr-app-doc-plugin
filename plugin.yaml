@@ -1,0 +1,88 @@
+name: stk-adr-app-doc-plugin
+description: Create a new file Architectural Decision Record - ADR
+display-name: stk-adr-app-doc-plugin
+picture: plugin.png
+category: backend # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/plugin/#category
+compatibility:
+  - java
+  - spring
+about: docs/about.md
+usage: docs/usage.md
+use-case: docs/use-case.md
+implementation: docs/implementation.md
+technologies: # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/yaml/#technologies
+  - "Api"
+types:
+  - app
+inputs:
+- label: Choose ADR template
+  name: template
+  type: text
+  required: true
+  items:
+    - michael-nygard-template 
+    - log4brains-template
+
+- label: ADR Date (ex YYYYMMDD)
+  type: int
+  name: date
+  required: true
+  pattern: "(?<!\\d)\\d{8}(?!\\d)"
+  help: "Inform date (e.g: YYYYMMDD)"
+
+- label: ADR Title 
+  type: text
+  name: title
+  required: true
+  help: "Inform ADR title"
+
+- label: Status 
+  name: status
+  type: text
+  required: true
+  items:
+    - draft
+    - proposed 
+    - rejected 
+    - accepted
+    - deprecated 
+
+- label: Context and Problem Statement 
+  type: text
+  name: context
+  required: true
+  help: "What is the issue that we're seeing that is motivating this decision or change?"
+
+- label: Decision 
+  type: text
+  name: decision
+  required: true
+  help: "What is the change that we're proposing and/or doing?"
+
+- label: Decision Outcome 
+  type: text
+  name: consequences 
+  required: true
+  help: "What becomes easier or more difficult to do because of this change?"
+
+
+global-computed-inputs:
+  adr_file_name: "{{inputs.date}}-{{inputs.title|replace(' ', '-')|lower}}.md"
+  date_string: "{{inputs.date|string}}"
+  date_formated_pt_br: "{{date_string[6:8]}}/{{date_string[4:6]}}/{{date_string[0:4]}}"
+ 
+hooks: 
+- type: render-templates
+  trigger: after-render
+  path: templates-michael
+  condition:
+    variable: template
+    operator: "=="
+    value: "michael-nygard-template"
+- type: render-templates
+  trigger: after-render
+  path: templates-log4brains
+  condition:
+    variable: template
+    operator: "=="
+    value: "log4brains-template"
