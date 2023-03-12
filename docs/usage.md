@@ -1,2 +1,5 @@
 # Usage
-stk apply plugin -p https://github.com/deusemarjunior/stk-adr-app-doc-plugin.git
+-- clone project 
+-- use stackspot-cli
+
+stk apply plugin -p stk-adr-app-doc-plugin
